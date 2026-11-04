@@ -1,5 +1,11 @@
 /* ---------- global additions ---------- */
 /* ---------- theme tokens (dark default, light via [data-theme="light"]) ---------- */
+/* registered so the hero gradient can interpolate; gradients themselves don't transition */
+@property --bg { syntax: '<color>'; inherits: true; initial-value: #050003; }
+@property --hero-mid { syntax: '<color>'; inherits: true; initial-value: #2a0510; }
+@property --edge { syntax: '<color>'; inherits: true; initial-value: #690419; }
+@property --h1 { syntax: '<percentage>'; inherits: true; initial-value: 32%; }
+@property --h2 { syntax: '<percentage>'; inherits: true; initial-value: 62%; }
 :root { color-scheme: dark;
   --bg: #050003; --bg-rgb: 5, 0, 3; --ink: #f3ece9; --ink-rgb: 243, 236, 233; --hi: #fff;
   --dim: rgba(var(--ink-rgb), .55); --line: rgba(var(--ink-rgb), .14);
@@ -13,6 +19,8 @@
   --c-fintech: #d4264a; --c-ai: #0b86a8; --c-hardware: #b87a00; --c-records: #7a4fd6; }
 html.theming *, html.theming *::before, html.theming *::after {
   transition: background-color .5s, color .5s, border-color .5s, fill .5s, stroke .5s !important; }
+/* transition on the pseudo-element, not html: animating --bg on html would retrigger body's background-color transition every frame */
+html.theming .hero::before { transition: --bg .5s, --hero-mid .5s, --edge .5s, --h1 .5s, --h2 .5s !important; }
 
 html { scroll-behavior: smooth; }
 /* Lenis drives scrolling when present */

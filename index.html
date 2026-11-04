@@ -259,10 +259,12 @@
   // front + back swap with the theme; the scrubbed area is kept across the swap
   const robotImg = document.getElementById('robotImg');
   const SRC = { dark: ['assets/portrait-bw.jpg', 'assets/robot-red.jpg'], light: ['assets/portrait-bw-light.jpeg', 'assets/robot.png'] };
+  // held in a const so the cache keeps them: a later src swap is then synchronous
+  const preloaded = Object.values(SRC).flat().map(s => { const i = new Image(); i.src = s; i.decode().catch(() => {}); return i; });
   const useTheme = () => {
     const [front, back] = SRC[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'];
     if (!robotImg.src.endsWith(back)) robotImg.src = back;
-    if (!photo.src.endsWith(front)) photo.src = front;
+    if (!photo.src.endsWith(front)) { photo.src = front; if (photo.complete) paint(); }
   };
   useTheme(); addEventListener('themechange', useTheme);
   addEventListener('resize', paint);

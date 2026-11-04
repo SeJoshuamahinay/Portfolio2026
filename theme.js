@@ -20,10 +20,12 @@
     const sync = () => { const l = root.dataset.theme === 'light';
       b.setAttribute('aria-pressed', l); b.setAttribute('aria-label', l ? 'Switch to dark mode' : 'Switch to light mode'); };
     sync();
+    let fade;
     b.addEventListener('click', () => {
+      clearTimeout(fade);
       root.classList.add('theming');
       apply(root.dataset.theme === 'light' ? 'dark' : 'light', true); sync();
-      setTimeout(() => root.classList.remove('theming'), 650);
+      fade = setTimeout(() => root.classList.remove('theming'), 650);
     });
     const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = root.dataset.theme === 'light' ? '#f7f3f0' : '#050003';
   });
